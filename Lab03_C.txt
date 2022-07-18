@@ -1,0 +1,127 @@
+//program to generate machine code using triples for A=-B*(C+D) using 3 address form
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<ctype.h>
+#include<string.h>
+
+char op[2],arg1[5],arg2[5],result[5];
+
+void main()
+{
+	FILE *fp1,*fp2;
+	fp1=fopen("input.txt","r");
+	fp2=fopen("output.txt","w");
+	
+	while(!feof(fp1))
+	{
+		fscanf(fp1,"%s%s%s%s ",result,arg1,op,arg2);
+		
+		if(strcmp(op,"+")==0)
+		{
+			fprintf(fp2,"MOV R0 ,%s\n",arg1);
+			fprintf(fp2,"ADD R0 ,%s\n",arg2);
+			fprintf(fp2,"MOV %s,R0\n\n",result);
+		}
+		
+		if(strcmp(op,"-")==0)
+		{
+			fprintf(fp2,"MOV R0 ,%s\n",arg1);
+			fprintf(fp2,"SUB R0 ,%s\n",arg2);
+			fprintf(fp2,"MOV %s,R0\n\n",result);
+		}
+		
+		if(strcmp(op,"*")==0)
+		{
+			fprintf(fp2,"MOV R0 ,%s\n",arg1);
+			fprintf(fp2,"MUL R0 ,%s\n",arg2);
+			fprintf(fp2,"MOV %s ,R0\n\n",result);
+		}
+		
+		if(strcmp(op,"/")==0)
+		{
+			fprintf(fp2,"MOV R0 ,%s\n",arg1);
+			fprintf(fp2,"DIV R0 ,%s\n",arg2);
+			fprintf(fp2,"MOV %s ,R0\n\n",result);
+		}
+		
+		if(strcmp(op,"=")==0)
+		{
+			fprintf(fp2,"MOV R0 ,%s\n",arg1);
+			fprintf(fp2,"MOV %s ,R0\n\n",result);
+		}
+	}
+	fclose(fp1);
+	fclose(fp2);
+}
+			
+		
+/*-------------------------------------------------------------------------------
+
+input.txt
+
+T1 -B = ?
+T2 C + D
+T3 T1 * T2
+A T3 =
+
+-------------------------------------------------------------------------------
+goutham@ubuntu:~/Desktop/COLLEGE$ cc Lab03.c
+goutham@ubuntu:~/Desktop/COLLEGE$ ./a.out
+-------------------------------------------------------------------------------
+output.txt
+
+MOV R0 ,-B
+MOV T1 ,R0
+
+MOV R0 ,C
+ADD R0 ,D
+MOV T2,R0
+
+MOV R0 ,T1
+MUL R0 ,T2
+MOV T3 ,R0
+
+MOV R0 ,T3
+MOV A ,R0
+*/
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		
+			

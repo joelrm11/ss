@@ -1,0 +1,161 @@
+#include<stdio.h>
+int main()
+{
+	int count,j,n,time,flag=0,time_quantum,ch=0;
+	int wait_time=0,turnaround_time=0,at[10],bt[10],rt[10];
+	int endtime ,i,smallest;
+	int remain=0,sum_wait=0,sum_turnaround=0;
+	printf("1.Round robin \n 2.SRTF\n");
+	scanf("%d",&ch);
+	printf("enter no. of processes:");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		printf("arrival time for processes %d:",i);
+		scanf("%d",&at[i]);
+		printf("enter thr burst time for process %d:",i);
+		scanf("%d",&bt[i]);
+		rt[i]=bt[i];
+	}
+	switch(ch)
+	{
+		case 1:printf("enter the quantumtime:");
+			scanf("%d",&time_quantum);
+			remain=n;
+			printf("processid|turnaround|waiting time\n");
+			for(time=0,count=0;remain!=0;)
+			{
+				if(rt[count]<=time_quantum && rt[count]>0)
+				{
+					time+=rt[count];
+					rt[count]=0;
+					flag=1;
+				}
+				else if(rt[count]>0)
+				{
+					time=time+time_quantum;
+					rt[count]-=time_quantum;
+				}
+				if(rt[count]==0 && flag==1)
+				{
+					remain--;
+					printf("p[%d]\t|\t%d\t|\t%d\n",count+1,time-at[count],time-at[count]-bt[count]);
+					wait_time+=time-at[count]-bt[count];
+					turnaround_time+=time-at[count];
+					flag=0;
+				}
+				if(count==n-1)
+					count=0;
+				else if(at[count+1]<=time)
+					count++;
+				else
+					count=0;
+			}
+				printf("\n average waiting time=%.2f\n",wait_time*1.0/n);
+				printf("\n average turnaround time=%.2f\n",turnaround_time*1.0/n);
+				break;
+		case 2:
+			remain=0;
+			printf("\n process|turnaroundtime|waiting time\n");
+			rt[9]=9999;
+			for(time=0;remain!=n;time++)
+			{
+					smallest=9;
+					for(i=0;i<n;i++)
+						if(at[i]<=time && rt[i]<rt[smallest] && rt[i]>0)
+							smallest=i;
+	
+					rt[smallest]--;
+					if(rt[smallest]==0)
+					{
+						remain++;
+						endtime=time+1;
+						printf("\n p[%d]\t|\t%d\t|\t%d",smallest+1,endtime-at[smallest],endtime-bt[smallest]-at[smallest]);
+						printf("\n");
+						sum_wait+=endtime-bt[smallest]-at[smallest];
+						sum_turnaround+=endtime-at[smallest];
+					}
+			}
+
+				printf("\n average waiting time=%f\n",sum_wait*1.0/n);
+				printf("\n average turnaround time=%f\n",sum_turnaround*1.0/n);
+				break;
+		
+		default:
+			printf("invalid\n");
+	}
+	return 0;
+}
+
+
+*/
+
+goutham@ubuntu:~/Desktop/COLLEGE$ cc Lab07.c
+goutham@ubuntu:~/Desktop/COLLEGE$ ./a.out
+1.Round robin 
+ 2.SRTF
+1
+enter no. of processes:6
+arrival time for processes 0:0
+enter thr burst time for process 0:8
+arrival time for processes 1:1
+enter thr burst time for process 1:4
+arrival time for processes 2:2
+enter thr burst time for process 2:2
+arrival time for processes 3:3
+enter thr burst time for process 3:1
+arrival time for processes 4:4
+enter thr burst time for process 4:3
+arrival time for processes 5:5
+enter thr burst time for process 5:2
+enter the quantumtime:2
+processid|turnaround|waiting time
+p[3]	|	4	|	2
+p[4]	|	4	|	3
+p[6]	|	6	|	4
+p[2]	|	14	|	10
+p[5]	|	12	|	9
+p[1]	|	20	|	12
+
+ average waiting time=6.67
+
+ average turnaround time=10.00
+
+goutham@ubuntu:~/Desktop/COLLEGE$ ./a.out
+1.Round robin 
+ 2.SRTF
+2
+enter no. of processes:6
+arrival time for processes 0:0
+enter thr burst time for process 0:8
+arrival time for processes 1:1
+enter thr burst time for process 1:4
+arrival time for processes 2:2
+enter thr burst time for process 2:2
+arrival time for processes 3:3
+enter thr burst time for process 3:1
+arrival time for processes 4:4
+enter thr burst time for process 4:3
+arrival time for processes 5:5
+enter thr burst time for process 5:2
+
+ process|turnaroundtime|waiting time
+
+ p[3]	|	2	|	0
+
+ p[4]	|	2	|	1
+
+ p[6]	|	2	|	0
+
+ p[2]	|	9	|	5
+
+ p[5]	|	9	|	6
+
+ p[1]	|	20	|	12
+
+ average waiting time=4.000000
+
+ average turnaround time=7.333333
+goutham@ubuntu:~/Desktop/COLLEGE$ 
+
+*/
